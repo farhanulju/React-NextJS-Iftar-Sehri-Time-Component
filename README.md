@@ -1,5 +1,16 @@
 # Ramadan Prayer Times Component
 
+![image](https://github.com/farhanulju/React-NextJS-Iftar-Sehri-Time-Component/assets/72323749/11e1046c-64c4-4ef5-a70e-ec5f677fa911)
+
+Before consent, the default look
+
+
+
+![image](https://github.com/farhanulju/React-NextJS-Iftar-Sehri-Time-Component/assets/72323749/dba6cc37-244d-4bd4-877b-9fcc022eb6a4)
+
+After consent look
+
+
 This is a React component that displays the Sehri and Iftar prayer times for Ramadan. It fetches the prayer times based on the user's location or defaults to the coordinates of Dhaka, Bangladesh if the user hasn't provided their location.
 
 ## Features
