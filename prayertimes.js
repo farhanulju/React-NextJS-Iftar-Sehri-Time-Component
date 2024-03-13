@@ -36,7 +36,7 @@ const PrayerTimes = () => {
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
 
-      const todayResponse = await axios.get(`http://api.aladhan.com/v1/timings/${today.toLocaleDateString('en-GB').split('/').join('-')}`, {
+      const todayResponse = await axios.get(`https://api.aladhan.com/v1/timings/${today.toLocaleDateString('en-GB').split('/').join('-')}`, {
         params: {
           latitude,
           longitude,
@@ -45,7 +45,7 @@ const PrayerTimes = () => {
           tune: '0,-2,0,0,0,+4,0,0,0',
         },
       });
-      const tomorrowResponse = await axios.get(`http://api.aladhan.com/v1/timings/${tomorrow.toLocaleDateString('en-GB').split('/').join('-')}`, {
+      const tomorrowResponse = await axios.get(`https://api.aladhan.com/v1/timings/${tomorrow.toLocaleDateString('en-GB').split('/').join('-')}`, {
         params: {
           latitude,
           longitude,
