@@ -36,14 +36,14 @@ const PrayerTimes = () => {
       const today = new Date();
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
-  
+
       const formatDate = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
+        return `${day}-${month}-${year}`;
       };
-  
+      console.log(formatDate(today))
       const todayResponse = await axios.get(`https://api.aladhan.com/v1/timings/${formatDate(today)}`, {
         params: {
           latitude,
@@ -59,17 +59,17 @@ const PrayerTimes = () => {
           longitude,
           method: 4,
           iso8601: true,
-          tune: '0,-3,0,0,0,+4,0,0,0',
+          tune: '0,-2,0,0,0,+4,0,0,0',
         },
       });
       const { data: todayData } = todayResponse;
       const { data: tomorrowData } = tomorrowResponse;
-  console.log(todayData)
+      console.log(todayData)
       if (todayData.code === 200 && tomorrowData.code === 200) {
         const { Fajr: todaySehri, Maghrib: todayIftar } = todayData.data.timings;
         const { Fajr: tomorrowSehri, Maghrib: tomorrowIftar } = tomorrowData.data.timings;
         setLoading(false);
-  
+
         setTimes({
           sehri: {
             today: todaySehri,
@@ -118,11 +118,12 @@ const PrayerTimes = () => {
     const currentDate = new Date();
     const prayerDate = new Date(times[prayerType].today);
     return (
-      prayerDate.getDate() > currentDate.getDate() ||
+      prayerDate.getDate() < currentDate.getDate() ||
       (prayerDate.getDate() === currentDate.getDate() &&
-        prayerDate.getTime() > currentDate.getTime())
+        prayerDate.getTime() < currentDate.getTime())
     );
   };
+  console.log(times.iftar.tomorrow);
 
   return (
     <div className="bg-gradient-to-br from-red-900 to-black shadow-lg rounded-sm p-6 mx-auto max-w-md mt-4">
@@ -137,41 +138,41 @@ const PrayerTimes = () => {
       ) : (
         <>
           <div className="flex justify-around">
-        <div className="text-center">
-          <span className="inline-block bg-red-600 text-white px-3 py-1 rounded-full mb-2">
-            Sehri Time
-          </span>
-          <p className="text-white font-semibold text-lg">
-            {isTomorrow('sehri')
-              ? `T'mrw ${getFormattedTime(times.sehri.tomorrow)}`
-              : getFormattedTime(times.sehri.today)}
-          </p>
-        </div>
-        <div className="text-center">
-          <span className="inline-block bg-white text-black px-3 py-1 rounded-full mb-2">
-            Iftar Time
-          </span>
-          <p className="text-white font-semibold text-lg">
-            {isTomorrow('iftar')
-              ? `T'mrw ${getFormattedTime(times.iftar.tomorrow)}`
-              : getFormattedTime(times.iftar.today)}
-          </p>
-        </div>
-      </div>
-      {showButton && (
-        <div className="text-center mt-6">
-          <button
-            className="bg-red-900 text-white px-3 py-1 rounded-md text-sm"
-            onClick={handleLocationConsent}
-          >
-            Based on Mirpur. Get yours now.
-          </button>
-          {error && (
-            <p className="text-white text-center">{error}</p>
+            <div className="text-center">
+              <span className="inline-block bg-red-600 text-white px-3 py-1 rounded-full mb-2">
+                Sehri Time
+              </span>
+              <p className="text-white font-semibold text-lg">
+                {isTomorrow('sehri')
+                  ? `T'mrw ${getFormattedTime(times.sehri.tomorrow)}`
+                  : getFormattedTime(times.sehri.today)}
+              </p>
+            </div>
+            <div className="text-center">
+              <span className="inline-block bg-white text-black px-3 py-1 rounded-full mb-2">
+                Iftar Time
+              </span>
+              <p className="text-white font-semibold text-lg">
+                {isTomorrow('iftar')
+                  ? `T'mrw ${getFormattedTime(times.iftar.tomorrow)}`
+                  : getFormattedTime(times.iftar.today)}
+              </p>
+            </div>
+          </div>
+          {showButton && (
+            <div className="text-center mt-6">
+              <button
+                className="bg-red-900 text-white px-3 py-1 rounded-md text-sm"
+                onClick={handleLocationConsent}
+              >
+                Based on Mirpur. Get yours now.
+              </button>
+              {error && (
+                <p className="text-white text-center">{error}</p>
+              )}
+            </div>
           )}
-        </div>
-      )}
-      </>
+        </>
       )}
     </div>
   );
